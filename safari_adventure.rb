@@ -53,6 +53,14 @@ loop do
     animal.last_seen_location = location
     animal.save
     break
+  elsif command == "extinct"
+    puts "Where do you want to end?"
+    extinct_location = gets.chomp.downcase
+    animal = Animal.where({"last_seen_location" => extinct_location})
+    animal.destroy_all
+    break
+  elsif command == "total"
+    puts Animal.sum(:seen_count)
   end
   
     # use "puts" to print details about all the animals
