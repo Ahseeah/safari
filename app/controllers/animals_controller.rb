@@ -7,19 +7,35 @@ class AnimalsController < ApplicationController
     render json: @animals
   end
 
-  def index
-    species = params[:species]
-    if species
-    @animals = Animal.all.where("species ilike ?", "%#{species}%")
-    else
-      @animals = Animal.all
+  # def index
+  #   species = params[:species]
+  #   if species
+  #   @animals = Animal.all.where("species ilike ?", "%#{species}%")
+  #   else
+  #     @animals = Animal.all
+    
+  #   end
+  #   render json: @animals
+  # end
+
+  # def index
+  #   location = params[:location]
+  #   if location
+  #   @animals = Animal.all.where("last_seen_location ilike ?", "%#{location}%")
+  #   else
+  #     @animals = Animal.all
+    
+  #   end
+  #   render json: @animals
+  # end
 
   # GET /animals/1
+
   def show
     @animal = Animal.find(params[:id])
-  else
+  
     @animals = Animal.all
-  end
+  
 
     render json: @animal
   end
@@ -42,6 +58,25 @@ class AnimalsController < ApplicationController
   end
 
   # PATCH/PUT /animals/1
+  def increment
+    @animal = Animal.find(params[:id])
+    @animal.seen_count += 1
+
+      #  if answer == "increment"
+  #    puts "Enter the species you are looking for:"
+   #   species = gets.chomp.downcase
+   #   animal = Animal.find_by("species": species)
+   #   animal.seen_count += 1
+   #   animal.save
+   #   puts "#{animal.species} count:#{animal.seen_count}"
+
+    if @animal.save
+      render json: @animal
+    else
+      render json: @animal.errors, status: :unprocessable_entity
+    end
+  end
+
   def update
     @animal = Animal.find(params[:id])
 
